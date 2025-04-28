@@ -3,6 +3,10 @@ import java.sql.*;
 public class jdbcDemo {
     public static void main (String [] args) throws Exception {
 
+        Connection conn = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+
         try {
             // Step 1: Load and Register the Driver (Class.forName is a simpler way)
             Class.forName("org.postgresql.Driver"); // Automatically registers the driver
@@ -47,32 +51,48 @@ public class jdbcDemo {
             String username = "postgres";
             String password = "admin";
 
-            Connection conn = DriverManager.getConnection(url, username, password);
-            System.out.println("Connection established successfully! ==> " + conn.getClass().getName());
+            conn = DriverManager.getConnection(url, username, password);
+            
+            if(conn!=null){
+                System.out.println("Connection established successfully! ==> " + conn.getClass().getName());
+                // Step 3 : Create a Statement Object
+                statement = conn.createStatement();
 
-            // Step 3 : Create a Statement Object
-            Statement statement = conn.createStatement();
-            System.out.println("Statement Object is created:: " + statement);
+                if(statement != null ){
+                    System.out.println("Statement Object is created:: " + statement);
 
-            String sqlSelectQuery = "select * from student_table";
-            ResultSet resultSet = statement.executeQuery(sqlSelectQuery);
-            System.out.println("ResultSet object is created:: " + resultSet); 
+                    String sqlSelectQuery = "select * from student_table";
+                    resultSet = statement.executeQuery(sqlSelectQuery);
 
+                    if(resultSet != null){
+                        System.out.println("ResultSet object is created:: " + resultSet); 
 
-            // Step 4 : process the resultSet Object which we got from Executing the Query
-            while (resultSet.next()) {
-                System.out.println("User ID: " + resultSet.getInt("id"));
-                System.out.println("User Name: " + resultSet.getString("name"));
+                        // Step 4 : process the resultSet Object which we got from Executing the Query
+                        while (resultSet.next()) {
+                            System.out.println("User ID: " + resultSet.getInt("id"));
+                            System.out.println("User Name: " + resultSet.getString("name"));
+                        }
+
+                    }
+                }
             }
-
-            // Final Step : Close the connection when done
-            conn.close();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             System.out.println("PostgreSQL Driver not found.");
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Connection failed.");
+        } finally {
+            // Final Step : Close the connection when done
+            if(resultSet!=null){
+                resultSet.close();
+            }
+            if(statement!=null){
+                statement.close();
+            }
+            if(conn!=null){
+                conn.close();
+            }
         }
 
     }

@@ -7,6 +7,11 @@ public class jdbcDemo {
         Statement statement = null;
         ResultSet resultSet = null;
 
+
+        String url = "jdbc:postgresql://localhost:5432/students";
+        String username = "postgres";
+        String password = "admin";
+
         try {
             // Step 1: Load and Register the Driver (Class.forName is a simpler way)
             Class.forName("org.postgresql.Driver"); // Automatically registers the driver
@@ -47,9 +52,6 @@ public class jdbcDemo {
             // Step 2: Establish a connection (example for PostgreSQL)
             // JDBC URL SYNTAX :: <mainprotocol>:<subprotocol>:<subname>
             //  mainprotocol -> jdbc  , subprotocol (DB Engine name) -> postgresql:// <address of the DB enging> (localhost:5432) / <db_name>
-            String url = "jdbc:postgresql://localhost:5432/students";
-            String username = "postgres";
-            String password = "admin";
 
             conn = DriverManager.getConnection(url, username, password);
             

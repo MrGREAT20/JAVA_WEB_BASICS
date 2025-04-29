@@ -16,3 +16,8 @@ public class StudentServiceFactory {
         return studentService;
     }
 }
+
+/**
+ *  The reason we have Factory Singleton Classes for Services , Controllers is because we dont want 
+ *  unnecessary object creations for handling the data, we can use the same controller and service.
+ */
